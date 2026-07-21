@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bubub's Love Hub 🤍</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg-primary: #fbfafc;
+  --bg-secondary: #f6f3f9;
+  --accent-pink: #ca336d;
+  --accent-pink-glow: rgba(202, 51, 109, 0.04);
+  --accent-purple: #6a1b9a;
+  --accent-gold: #b28c00;
+  --text-main: #2b203c;
+  --text-muted: #685c79;
+  --glass-border: rgba(112, 26, 181, 0.04);
+  --card-shadow: 0 16px 48px rgba(37, 28, 53, 0.03), 0 4px 12px rgba(37, 28, 53, 0.01);
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light mode mood themes */
+body.mood-loving {
+  --bg-primary: #fff3f6;
+  --accent-pink: #ca336d;
+  --accent-pink-glow: rgba(202, 51, 109, 0.08);
+}
+body.mood-tired {
+  --bg-primary: #f5f0fb;
+  --accent-pink: #5e2ca8;
+  --accent-pink-glow: rgba(94, 44, 168, 0.08);
+}
+body.mood-stressed {
+  --bg-primary: #fcf4f0;
+  --accent-pink: #b54a1a;
+  --accent-pink-glow: rgba(181, 74, 26, 0.08);
+}
+body.mood-sad {
+  --bg-primary: #f0f5fa;
+  --accent-pink: #1b6ca8;
+  --accent-pink-glow: rgba(27, 108, 168, 0.08);
+}
+body.mood-clingy {
+  --bg-primary: #fff2f4;
+  --accent-pink: #b51543;
+  --accent-pink-glow: rgba(181, 21, 67, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  overflow-x: hidden;
+  transition: background-color 0.8s ease;
+}
+
+/* Hardware-accelerated background decorative elements */
+.bg-decor {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(112, 26, 181, 0.03) 1px, transparent 1px),
+    linear-gradient(to right, rgba(112, 26, 181, 0.003) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(112, 26, 181, 0.003) 1px, transparent 1px);
+  background-size: 32px 32px, 64px 64px, 64px 64px;
+  opacity: 0.8;
+}
+.orb {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.14;
+  transition: background-color 0.8s ease;
+  will-change: transform;
+}
+.orb-1 {
+  background-color: var(--accent-pink);
+  top: -10%;
+  right: 5%;
+  animation: floatOrb1 25s infinite alternate ease-in-out;
+}
+.orb-2 {
+  background-color: var(--accent-purple);
+  bottom: -10%;
+  left: 5%;
+  animation: floatOrb2 30s infinite alternate ease-in-out;
+}
+.orb-3 {
+  background-color: var(--accent-gold);
+  top: 40%;
+  left: 35%;
+  width: 400px;
+  height: 400px;
+  opacity: 0.06;
+  animation: floatOrb3 22s infinite alternate ease-in-out;
+}
+@keyframes floatOrb1 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-80px, 60px, 0) scale(1.1); }
+}
+@keyframes floatOrb2 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(80px, -60px, 0) scale(1.05); }
+}
+@keyframes floatOrb3 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-50px, 50px, 0) scale(1.15); }
+}
+.sparkles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.sparkle {
+  position: absolute;
+  color: var(--accent-pink);
+  opacity: 0.12;
+  font-size: 1.2rem;
+  animation: floatSparkle 10s infinite ease-in-out;
+  will-change: transform;
+}
+.sparkle-1 { top: 15%; left: 10%; animation-delay: 0s; font-size: 1.5rem; }
+.sparkle-2 { top: 40%; left: 85%; animation-delay: 2s; font-size: 1rem; }
+.sparkle-3 { top: 75%; left: 20%; animation-delay: 4s; font-size: 1.3rem; }
+.sparkle-4 { top: 25%; left: 70%; animation-delay: 6s; font-size: 0.9rem; }
+.sparkle-5 { top: 60%; left: 50%; animation-delay: 1s; font-size: 1.4rem; }
+.sparkle-6 { top: 85%; left: 80%; animation-delay: 3s; font-size: 1.1rem; }
+
+@keyframes floatSparkle {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.12; }
+  50% { transform: translate3d(0, -30px, 0) rotate(15deg); opacity: 0.25; }
+}
+
+
+
+/* Container & Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 100px;
+  position: relative;
+}
+
+/* Navigation */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 40px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.015);
+}
+.back-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.back-btn:hover {
+  color: var(--accent-pink);
+  border-color: var(--accent-pink);
+  box-shadow: 0 8px 24px var(--accent-pink-glow);
+  transform: translateY(-2px);
+}
+
+/* Compliment Banner */
+.love-banner {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-radius: 28px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 45px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+.love-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+}
+.love-banner h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+.love-banner p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Tabs */
+.tabs-menu {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+.tab-trigger {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  color: var(--text-muted);
+  padding: 14px 28px;
+  border-radius: 40px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+}
+.tab-trigger:hover, .tab-trigger.active {
+  color: #ffffff;
+  background: var(--accent-pink);
+  border-color: var(--accent-pink);
+  box-shadow: 0 8px 24px rgba(202, 51, 109, 0.25);
+  transform: translateY(-3px);
+}
+.tab-trigger.active {
+  background: linear-gradient(135deg, var(--accent-pink), #a32454);
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards */
+.glass-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-radius: 28px;
+  padding: 40px;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition-smooth);
+}
+.glass-card:hover {
+  box-shadow: 0 20px 60px rgba(37, 28, 53, 0.05);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 35px;
+}
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mood-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.1rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mood-options {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+}
+@media (max-width: 480px) {
+  .mood-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.mood-btn {
+  background: #fbfbfd;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-radius: 20px;
+  padding: 24px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.mood-btn .emoji {
+  font-size: 2.2rem;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.mood-btn .label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.mood-btn:hover {
+  background: #ffffff;
+  border-color: var(--accent-pink);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(202, 51, 109, 0.06);
+}
+.mood-btn:hover .emoji {
+  transform: scale(1.2) rotate(5deg);
+}
+.mood-btn.active {
+  background: #ffffff;
+  border-color: var(--accent-pink);
+  box-shadow: 0 12px 30px rgba(202, 51, 109, 0.1);
+  transform: translateY(-2px);
+}
+.mood-btn.active .label {
+  color: var(--accent-pink);
+  font-weight: 600;
+}
+
+.mood-response {
+  background: #fbfbfd;
+  border-radius: 20px;
+  border-left: 4px solid var(--accent-pink);
+  padding: 24px 30px;
+  margin-top: 30px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+}
+.mood-response h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-pink);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.mood-response p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Countdowns */
+.countdown-box {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+.countdown-item {
+  background: #fbfbfd;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-radius: 20px;
+  padding: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transition: var(--transition-smooth);
+}
+.countdown-item:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+}
+.countdown-info h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+.countdown-info p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.countdown-days {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--accent-pink);
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 1;
+  text-align: right;
+}
+.countdown-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: right;
+  margin-top: 4px;
+}
+/* Coupons Grid */
+.coupons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+.coupon-card {
+  height: 380px;
+}
+.coupon-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+@keyframes couponFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.coupon-front, .coupon-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  padding: 30px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--card-shadow);
+}
+.coupon-front {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  animation: couponFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.coupon-card.used .coupon-front {
+  display: none !important;
+}
+.coupon-front::after {
+  content: '';
+  position: absolute;
+  bottom: 85px;
+  left: 20px;
+  right: 20px;
+  border-bottom: 1.5px dashed rgba(202, 51, 109, 0.15);
+}
+.ticket-watermark {
+  position: absolute;
+  right: -25px;
+  top: 30px;
+  font-size: 3rem;
+  font-weight: 900;
+  color: rgba(202, 51, 109, 0.03);
+  transform: rotate(90deg);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+.coupon-back {
+  background-color: #fcfbfd;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.coupon-card.used .coupon-back {
+  display: flex !important;
+  animation: couponFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.notch {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 28px;
+  background-color: var(--bg-primary);
+  border: 1.5px solid var(--glass-border);
+  transform: translateY(-50%);
+  z-index: 10;
+  transition: background-color 0.8s ease, border-color 0.8s ease;
+  pointer-events: none;
+}
+.notch-l {
+  left: -9px;
+  border-radius: 0 14px 14px 0;
+  border-left: none;
+}
+.notch-r {
+  right: -9px;
+  border-radius: 14px 0 0 14px;
+  border-right: none;
+}
+.coupon-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+.coupon-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+.coupon-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+.coupon-action-btn {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 6px 20px rgba(202, 51, 109, 0.2);
+  z-index: 2;
+}
+.coupon-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(202, 51, 109, 0.35);
+}
+.coupon-status {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  color: var(--accent-pink);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.coupon-redeemed-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.coupon-reset-btn {
+  margin-top: 20px;
+  background: transparent;
+  border: 1px dashed rgba(202, 51, 109, 0.25);
+  color: var(--accent-pink);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.coupon-reset-btn:hover {
+  background: var(--accent-pink-glow);
+  border-style: solid;
+}
+
+/* Makeup & Preference Lists */
+.pref-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 35px;
+}
+@media (max-width: 900px) {
+  .pref-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.makeup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.makeup-item {
+  background: #fbfbfd;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-radius: 20px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  transition: var(--transition-smooth);
+}
+.makeup-item:hover {
+  transform: translateX(6px);
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.02);
+}
+.makeup-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+.makeup-info p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.makeup-status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.makeup-select {
+  background: #ffffff;
+  color: var(--text-main);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-smooth);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+}
+.makeup-select:hover {
+  border-color: var(--accent-pink);
+}
+.makeup-request-btn {
+  background: var(--accent-pink-glow);
+  border: 1px solid rgba(202, 51, 109, 0.15);
+  color: var(--accent-pink);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.makeup-request-btn:hover {
+  background: var(--accent-pink);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(202, 51, 109, 0.2);
+}
+
+.cheat-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 25px;
+  border-bottom: 1.5px solid rgba(112, 26, 181, 0.05);
+  padding-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.cheat-section {
+  margin-bottom: 30px;
+}
+.cheat-section h4 {
+  font-size: 0.85rem;
+  color: var(--accent-pink);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.cheat-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cheat-list li {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  position: relative;
+  padding-left: 20px;
+  line-height: 1.5;
+  text-align: left;
+}
+.cheat-list li::before {
+  content: '✦';
+  color: var(--accent-pink);
+  font-size: 0.85rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.cheat-list.dislikes li::before {
+  content: '✕';
+  color: var(--accent-pink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+  top: 2px;
+}
+
+/* Notes Tab */
+.notes-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 35px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .notes-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sender Selector Segment Control */
+.sender-selector {
+  display: flex;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+.sender-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 12px;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.sender-btn.active {
+  background: #ffffff;
+  color: var(--accent-pink);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.note-input-group {
+  margin-bottom: 20px;
+}
+.note-input-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.note-textarea {
+  width: 100%;
+  height: 120px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  background: #ffffff;
+  resize: none;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+.note-textarea:focus {
+  border-color: var(--accent-pink);
+  box-shadow: 0 0 0 4px var(--accent-pink-glow);
+}
+
+/* Sticker selection */
+.sticker-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+.sticker-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.sticker-btn.active {
+  border-color: var(--accent-pink);
+  background: var(--accent-pink-glow);
+  transform: scale(1.1);
+}
+
+.send-note-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 15px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(202, 51, 109, 0.15);
+}
+.send-note-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(202, 51, 109, 0.3);
+}
+
+/* Sticky notes history grid */
+.notes-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.sticky-note {
+  background: #fff9e6; /* yellow pastel default */
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+  position: relative;
+  transition: var(--transition-smooth);
+  transform: rotate(-1deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  border: 1px solid rgba(0,0,0,0.02);
+}
+.sticky-note:nth-child(2n) {
+  background: #f0f8ff; /* blue pastel */
+  transform: rotate(1.5deg);
+}
+.sticky-note:nth-child(3n) {
+  background: #fff0f5; /* pink/lavender pastel */
+  transform: rotate(-1.5deg);
+}
+.sticky-note:nth-child(4n) {
+  background: #f0fff0; /* green pastel */
+  transform: rotate(1deg);
+}
+.sticky-note:hover {
+  transform: translateY(-5px) rotate(0deg) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+}
+.sticky-pin {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+}
+.sticky-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.sticky-direction {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.sticky-direction span.arrow {
+  color: var(--accent-pink);
+  margin: 0 4px;
+}
+.sticky-sticker {
+  font-size: 1.4rem;
+}
+.sticky-body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  word-break: break-word;
+}
+.sticky-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  border-top: 1px dashed rgba(0,0,0,0.05);
+  padding-top: 10px;
+}
+.sticky-date {
+  font-style: italic;
+}
+.delete-note-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--transition-smooth);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.delete-note-btn:hover {
+  color: #d32f2f;
+  background: rgba(211, 47, 47, 0.05);
+}
+.clear-all-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+.clear-all-btn:hover {
+  background: rgba(211, 47, 47, 0.05);
+  border-color: rgba(211, 47, 47, 0.2);
+  color: #d32f2f;
+}
+.empty-notes {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  background: #ffffff;
+  border: 1px dashed rgba(0,0,0,0.06);
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* Letter Tab */
+.letter-layout {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 45px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .letter-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.letter-box {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-radius: 28px;
+  padding: 50px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+}
+.letter-box::before {
+  content: '💌';
+  position: absolute;
+  top: -24px;
+  left: 50px;
+  font-size: 2.6rem;
+}
+.letter-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--text-main);
+  margin-bottom: 30px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.letter-content {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  color: var(--text-main);
+  line-height: 1.8;
+  text-align: left;
+  letter-spacing: 0.01em;
+}
+.letter-content p {
+  margin-bottom: 24px;
+  text-indent: 24px;
+}
+.letter-content p:first-of-type {
+  text-indent: 0;
+}
+.letter-content .signature {
+  text-align: right;
+  margin-top: 50px;
+  font-style: italic;
+  color: var(--accent-pink);
+  font-size: 1.55rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.polaroid-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 25px;
+  justify-items: center;
+  align-items: start;
+  padding: 20px 0;
+  width: 100%;
+}
+.polaroid {
+  background: #ffffff;
+  padding: 12px 12px 22px;
+  border-radius: 6px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05), 0 3px 8px rgba(0, 0, 0, 0.01);
+  width: 100%;
+  max-width: 255px;
+  color: #1a1a1a;
+  position: relative;
+  transform: rotate(-2deg);
+  transition: var(--transition-smooth);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+.polaroid::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 90px;
+  height: 24px;
+  background: rgba(202, 51, 109, 0.15);
+  backdrop-filter: blur(1px);
+  border-left: 2px dashed rgba(255, 255, 255, 0.4);
+  border-right: 2px dashed rgba(255, 255, 255, 0.4);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  z-index: 2;
+}
+.polaroid:nth-child(even) {
+  transform: rotate(2deg);
+}
+.polaroid:nth-child(even)::before {
+  transform: translateX(-50%) rotate(2deg);
+  background: rgba(112, 26, 181, 0.1);
+}
+.polaroid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  display: block;
+}
+.polaroid-caption {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 1.05rem;
+  color: #2b2b2b;
+  line-height: 1.35;
+}
+.polaroid:hover {
+  transform: scale(1.06) rotate(0deg);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+footer {
+  text-align: center;
+  margin-top: 80px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-decor">
+  <div class="grid-overlay"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="sparkles-container">
+    <div class="sparkle sparkle-1">✦</div>
+    <div class="sparkle sparkle-2">✦</div>
+    <div class="sparkle sparkle-3">✦</div>
+    <div class="sparkle sparkle-4">✦</div>
+    <div class="sparkle sparkle-5">✦</div>
+    <div class="sparkle sparkle-6">✦</div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="header-nav">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      </svg>
+      Taman Bunga Bubub
+    </a>
+    <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--accent-pink); font-size: 1rem;">
+      Made with 🤍 for Salsa
+    </div>
+  </div>
+
+  <div class="love-banner">
+    <h1 id="compliment-title">Selamat datang di Love Hub, Salsa 🤍</h1>
+    <p>Sebuah ruang kecil yang didedikasikan untuk menyimpan jejak perjalanan, rencana kencan, dan hal-hal kecil yang berarti bagi kita. ✨</p>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs-menu">
+    <button class="tab-trigger active" onclick="switchTab(event, 'dashboard-tab')">Dashboard & Kabar</button>
+    <button class="tab-trigger" onclick="switchTab(event, 'notes-tab')">Catatan Lucu 💬</button>
+    <button class="tab-trigger" onclick="switchTab(event, 'coupons-tab')">Kupon Kencan 🎟️</button>
+    <button class="tab-trigger" onclick="switchTab(event, 'makeup-tab')">Rak Makeup & Catatan 💄</button>
+    <!-- <button class="tab-trigger" onclick="switchTab(event, 'letter-tab')">Surat Ulang Tahun 💌</button> -->
+  </div>
+
+  <!-- Tab Content: Dashboard & Mood -->
+  <div id="dashboard-tab" class="tab-content active">
+    <div class="dashboard-grid">
+      <!-- Mood Tracker Card -->
+      <div class="glass-card">
+        <h2 class="mood-title">Bagaimana Kabarmu Hari Ini, Salsa? 🤍</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+          Bagikan perasaanmu hari ini. Warna halaman akan berlarut lembut menyesuaikan suasana hatimu.
+        </p>
+        
+        <div class="mood-options">
+          <button class="mood-btn clickable" onclick="setMood('loving')">
+            <span class="emoji">💖</span>
+            <span class="label">Bahagia & Hangat</span>
+          </button>
+          <button class="mood-btn clickable" onclick="setMood('tired')">
+            <span class="emoji">😴</span>
+            <span class="label">Lelah & Butuh Rehat</span>
+          </button>
+          <button class="mood-btn clickable" onclick="setMood('stressed')">
+            <span class="emoji">🤯</span>
+            <span class="label">Pikiran Sedang Penuh</span>
+          </button>
+          <button class="mood-btn clickable" onclick="setMood('sad')">
+            <span class="emoji">😢</span>
+            <span class="label">Redup & Kurang Semangat</span>
+          </button>
+          <button class="mood-btn clickable" onclick="setMood('clingy')">
+            <span class="emoji">🎀</span>
+            <span class="label">Ingin Manja & Bersandar</span>
+          </button>
+        </div>
+
+        <div class="mood-response" id="mood-response-box">
+          <h4 id="mood-response-title">Kabar Hari Ini</h4>
+          <p id="mood-response-desc">Menanti pilihan suasana hatimu untuk menyelaraskan suasana ruang kita.</p>
+        </div>
+      </div>
+
+      <!-- Countdowns Card -->
+      <div class="glass-card countdown-box">
+        <h2 class="mood-title" style="margin-bottom: 0px;">Momen Spesial Kita ✨</h2>
+        
+        <!-- Anniversary Countdown -->
+        <div class="countdown-item">
+          <div class="countdown-info">
+            <h3>Langkah Kebersamaan</h3>
+            <p>Dimulai sejak momen indah pada 16 Juni 2024</p>
+          </div>
+          <div class="countdown-value">
+            <div class="countdown-days" id="anniversary-days">0</div>
+            <div class="countdown-label">Hari Terlewati</div>
+          </div>
+        </div>
+
+        <!-- Birthday Countdown -->
+        <div class="countdown-item">
+          <div class="countdown-info">
+            <h3>Hari Lahir Salsa</h3>
+            <p>Merayakan senyummu setiap tanggal 6 Agustus</p>
+          </div>
+          <div class="countdown-value">
+            <div class="countdown-days" id="birthday-days">0</div>
+            <div class="countdown-label">Hari Menuju Hari Bahagia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Content: Cute Notes -->
+  <div id="notes-tab" class="tab-content">
+    <div class="notes-layout">
+      
+      <!-- Input Panel -->
+      <div class="glass-card">
+        <h2 class="mood-title" style="margin-bottom: 20px;">Tulis Catatan Lucu ✍️</h2>
+        
+        <!-- Sender selection segment -->
+        <div class="note-input-group">
+          <label>Pengirim & Penerima</label>
+          <div class="sender-selector">
+            <button class="sender-btn active" id="sender-salsa" onclick="selectSender('Salsa')">Salsa ➔ Reno</button>
+            <button class="sender-btn" id="sender-reno" onclick="selectSender('Reno')">Reno ➔ Salsa</button>
+          </div>
+        </div>
+
+        <!-- Note Text -->
+        <div class="note-input-group">
+          <label for="note-text">Pesan Lucu</label>
+          <textarea id="note-text" class="note-textarea" placeholder="Tulis sesuatu yang manis, lucu, atau penyemangat di sini... 🤍"></textarea>
+        </div>
+
+        <!-- Sticker Picker -->
+        <div class="note-input-group">
+          <label>Pilih Stiker</label>
+          <div class="sticker-options">
+            <button class="sticker-btn active" onclick="selectSticker('💖')">💖</button>
+            <button class="sticker-btn" onclick="selectSticker('🧸')">🧸</button>
+            <button class="sticker-btn" onclick="selectSticker('🌸')">🌸</button>
+            <button class="sticker-btn" onclick="selectSticker('☕')">☕</button>
+            <button class="sticker-btn" onclick="selectSticker('🍪')">🍪</button>
+            <button class="sticker-btn" onclick="selectSticker('✨')">✨</button>
+            <button class="sticker-btn" onclick="selectSticker('🐱')">🐱</button>
+          </div>
+        </div>
+
+        <button class="send-note-btn clickable" onclick="addNote()">Kirim Catatan Cinta ✨</button>
+      </div>
+
+      <!-- History Panel -->
+      <div class="glass-card" style="min-height: 480px;">
+        <div class="notes-history-header">
+          <h2 class="mood-title" style="margin-bottom: 0;">Papan Catatan Kita 📌</h2>
+          <button class="clear-all-btn clickable" onclick="clearAllNotes()">Hapus Semua</button>
+        </div>
+        
+        <div class="notes-grid" id="notes-grid-container">
+          <!-- Sticky notes rendered dynamically -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tab Content: Coupons -->
+  <div id="coupons-tab" class="tab-content">
+    <div class="coupons-grid" id="coupons-container">
+      <!-- Dynamic rendering -->
+    </div>
+  </div>
+
+  <!-- Tab Content: Makeup & Preferences -->
+  <div id="makeup-tab" class="tab-content">
+    <div class="pref-grid">
+      <!-- Makeup List Card -->
+      <div class="glass-card">
+        <h2 class="mood-title">Rak Kosmetik Salsa 💄</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+          Pantau persediaan produk kosmetikmu di rak ini. Jika ada produk yang mulai habis, silakan tekan tombol "Kirim Kabar Restock" untuk meminta Reno membelikannya via WhatsApp.
+        </p>
+        
+        <div class="makeup-list" id="makeup-list-container">
+          <!-- Dynamic rendering -->
+        </div>
+      </div>
+
+      <!-- Food Preferences & General Notes -->
+      <div class="glass-card cheat-card">
+        <h3>Catatan & Preferensi 📝</h3>
+        
+        <div class="cheat-section">
+          <h4>Preferensi Kuliner Salsa ⭐</h4>
+          <ul class="cheat-list">
+            <li>Menyukai cita rasa gurih, asin, dan berbumbu kuat.</li>
+            <li>Sangat menyukai hidangan <b>Tiger Roll Cheese</b> di Sushi Hiro 🧀</li>
+            <li>Menyukai sajian <b>Inari Salmon Tartar Sushi</b> di Sushi Go 🍣</li>
+            <li>Pilihan buah kegemaran: kelengkeng, rambutan, dan mangga manis 🥭</li>
+            <li>Secangkir air hangat adalah minuman wajib di setiap suasana 🥛</li>
+          </ul>
+        </div>
+
+        <div class="cheat-section">
+          <h4>Makanan yang Salsa Hindari ✕</h4>
+          <ul class="cheat-list dislikes">
+            <li>Kurang menyukai cita rasa manis yang berlebihan pada makanan.</li>
+            <li>Menghindari konsumsi sayur-sayuran 🥦</li>
+            <li>Buah-buahan yang kurang disukai: pisang, lemon, nanas, alpukat, dan kiwi.</li>
+            <li>Saat memesan sushi, pastikan tidak mengandung alpukat maupun timun.</li>
+          </ul>
+        </div>
+
+        <div class="cheat-section">
+          <h4>Catatan Penting Lainnya ✦</h4>
+          <ul class="cheat-list">
+            <li>Golongan Darah: A</li>
+            <li>Bunga pilihan: Lily (khususnya perpaduan dua warna), Peonies, dan Tulip.</li>
+            <li>Impian masa depan: Darry Ring sebagai simbol ketulusan 💍</li>
+            <li>Komitmen kecil kita: Mengucapkan kata kasih dan pujian tulus setiap harinya.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Content: Special Birthday Letter -->
+  <div id="letter-tab" class="tab-content">
+    <div class="letter-layout">
+      <div class="letter-box">
+        <h2 class="letter-title">Catatan Ulang Tahun untuk Salsa 🤍</h2>
+        <div class="letter-content">
+          <p>Selamat bertambah usia, Salsa sayang. Menatap langkahmu sejauh ini membuatku menyadari betapa luar biasanya dirimu dalam menghadapi setiap fase kehidupan. Entah di kala ringan maupun berat, kamu selalu mampu melaluinya dengan anggun. Aku selalu menaruh rasa bangga yang teramat besar atas ketulusan dan kebaikan yang selalu kamu bagikan kepada orang-orang di sekitarmu, terutama caramu memperlakukanku dengan penuh kasih.</p>
+          <p>Harapanku untukmu di usia yang baru ini sangat sederhana. Aku ingin kamu selalu tumbuh menjadi versi dirimu yang paling bahagia, melangkah bebas mengejar apa yang kamu impikan, dan menjaga kesehatanmu baik-baik. Semoga seiring berjalannya waktu, kedekatan kita juga semakin matang dan penuh kedamaian. Aku akan selalu melangitkan doa-doa terbaik untuk kelancaran setiap urusan dan pencapaianmu.</p>
+          <p>Terima kasih telah sabar mendampingiku yang masih banyak belajar ini. Maaf jika kadang kala aku masih membuat kesalahan atau belum mampu memahami setiap sudut keinginanmu sepenuhnya. Aku berkomitmen untuk terus berbenah demi menjadi pelindung dan pendamping terbaik bagimu. Aku ingin terus merayakan hari lahirmu di tahun-tahun berikutnya, mendampingi setiap lembar baru yang akan kamu tulis di masa depan.</p>
+          <p>Semoga kejutan kecil ini dapat menyiratkan betapa berharganya dirimu bagiku. Sederhana saja, namun kuharap mampu menumbuhkan senyum di wajah cantikmu hari ini. Terima kasih telah hadir dan menjadi bagian terindah dalam hidupku. Sekali lagi, selamat ulang tahun, sayang. Reno menyayangimu, kemarin, hari ini, hingga hari-hari yang belum kita ketahui nanti.</p>
+          <div class="signature">Dengan segenap rasa cinta,<br>Reno. SELAMAT ULANG TAHUN SAYANG❣️🥺🙀✨🫶🏻</div>
+        </div>
+      </div>
+
+      <!-- Scrapbook Photo Gallery -->
+      <div class="polaroid-gallery">
+        <div class="polaroid">
+          <img src="1.jpeg" alt="Kenangan 1">
+          <div class="polaroid-caption">Tawa manismu yang selalu menghangatkan hari 🌸</div>
+        </div>
+        <div class="polaroid">
+          <img src="2.jpeg" alt="Kenangan 2">
+          <div class="polaroid-caption">Setiap sudut kenangan yang kita lalui bersama ✨</div>
+        </div>
+        <div class="polaroid">
+          <img src="3.jpeg" alt="Kenangan 3">
+          <div class="polaroid-caption">Genggaman tangan yang saling menguatkan 🤍</div>
+        </div>
+        <div class="polaroid">
+          <img src="4.jpeg" alt="Kenangan 4">
+          <div class="polaroid-caption">Momen-momen kecil yang membuatku bersyukur 🧸</div>
+        </div>
+        <div class="polaroid">
+          <img src="5.jpeg" alt="Kenangan 5">
+          <div class="polaroid-caption">Senyuman indah yang ingin kujaga selamanya 💖</div>
+        </div>
+        <div class="polaroid">
+          <img src="6.jpeg" alt="Kenangan 6">
+          <div class="polaroid-caption">Menatap masa depan dengan penuh keyakinan 💫</div>
+        </div>
+        <div class="polaroid">
+          <img src="7.jpeg" alt="Kenangan 7">
+          <div class="polaroid-caption">Dukungan tulus di setiap lelah dan rehat kita ☕</div>
+        </div>
+        <div class="polaroid">
+          <img src="8.jpeg" alt="Kenangan 8">
+          <div class="polaroid-caption">Untuk hari kemarin, hari ini, dan selamanya 🌹</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Ruang Cinta Salsa & Reno — Dibuat Khusus dengan Penuh Kasih Sayang © 2026</p>
+  </footer>
+
+</div>
+
+<script>
+
+
+// Tab Switching
+function switchTab(evt, tabId) {
+  const contents = document.getElementsByClassName('tab-content');
+  for (let i = 0; i < contents.length; i++) {
+    contents[i].classList.remove('active');
+  }
+  const triggers = document.getElementsByClassName('tab-trigger');
+  for (let i = 0; i < triggers.length; i++) {
+    triggers[i].classList.remove('active');
+  }
+  document.getElementById(tabId).classList.add('active');
+  evt.currentTarget.classList.add('active');
+}
+
+// Mood Responses Map
+const moodResponses = {
+  loving: {
+    title: "Suasana hati yang indah dan penuh cinta 💖",
+    desc: "Melihatmu bahagia adalah kabar terbaik hari ini. Semoga kehangatan ini terus membersamai langkahmu. Reno selalu di sini untuk berbagi tawa dan merayakan kebahagiaan ini bersamamu."
+  },
+  tired: {
+    title: "Lelah yang mendera setelah hari yang panjang 😴",
+    desc: "Kamu sudah mengupayakan yang terbaik hari ini. Sekarang, saatnya melonggarkan pundak dan beristirahat. Jika butuh segelas air hangat atau teman bicara untuk melepas penat, Reno selalu siap mendampingi."
+  },
+  stressed: {
+    title: "Pikiran yang sedang riuh dan berat 🤯",
+    desc: "Dunia terkadang terasa terlalu bising, ya? Jangan memaksakan diri untuk menyelesaikan segalanya hari ini. Mari kita pelan-pelan menyederhanakan kekhawatiran itu bersama-sama."
+  },
+  sad: {
+    title: "Perasaan redup yang membutuhkan ketenangan 😢",
+    desc: "Tidak apa-apa untuk merasa tidak baik-baik saja. Jika ingin bercerita, Reno akan mendengarkan. Jika ingin hening, Reno akan menemani di sisimu tanpa banyak bertanya."
+  },
+  clingy: {
+    title: "Keinginan untuk bersandar dan bermanja 🎀",
+    desc: "Setiap orang butuh tempat bersandar yang aman. Ruang ini dan pelukanku selalu terbuka lebar untuk memeluk erat segala keluh kesah dan lelahmu."
+  }
+};
+
+// Set Mood Function
+function setMood(moodKey) {
+  const buttons = document.querySelectorAll('.mood-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  
+  const activeBtn = Array.from(buttons).find(btn => btn.onclick.toString().includes(`'${moodKey}'`));
+  if (activeBtn) activeBtn.classList.add('active');
+
+  document.body.className = '';
+  document.body.classList.add('mood-' + moodKey);
+
+  const rTitle = document.getElementById('mood-response-title');
+  const rDesc = document.getElementById('mood-response-desc');
+  
+  rTitle.textContent = moodResponses[moodKey].title;
+  rDesc.textContent = moodResponses[moodKey].desc;
+
+  localStorage.setItem('salsa_mood', moodKey);
+}
+
+// Load Saved Mood
+const savedMood = localStorage.getItem('salsa_mood');
+if (savedMood && moodResponses[savedMood]) {
+  setMood(savedMood);
+}
+
+// Countdowns
+function calculateCountdowns() {
+  const now = new Date();
+  const annivDate = new Date('2024-06-16T00:00:00');
+  const diffTimeAnniv = Math.abs(now - annivDate);
+  const diffDaysAnniv = Math.floor(diffTimeAnniv / (1000 * 60 * 60 * 24));
+  document.getElementById('anniversary-days').textContent = diffDaysAnniv;
+
+  let nextBday = new Date(now.getFullYear(), 7, 6);
+  if (now > nextBday) {
+    nextBday.setFullYear(now.getFullYear() + 1);
+  }
+  const diffTimeBday = nextBday - now;
+  const diffDaysBday = Math.ceil(diffTimeBday / (1000 * 60 * 60 * 24));
+  document.getElementById('birthday-days').textContent = diffDaysBday;
+}
+calculateCountdowns();
+setInterval(calculateCountdowns, 60000);
+
+// Coupon Data (15 coupons including dating activities)
+const initialCoupons = [
+  {
+    id: 'air_hangat',
+    icon: '🥛',
+    title: 'Kupon Secangkir Kehangatan',
+    desc: 'Secangkir air hangat yang diseduh khusus oleh Reno untuk menenangkan harimu di kala lelah.',
+    waText: 'Halo Reno, aku sedang ingin ditenangkan. Boleh tolong buatkan segelas air hangat sekarang? Terima kasih ya. 🥛✨'
+  },
+  {
+    id: 'sushi_hiro',
+    icon: '🧀',
+    title: 'Voucher Tiger Roll Cheese',
+    desc: 'Kencan menikmati hidangan favorit kita di Sushi Hiro. Waktu bersenang-senang hanya untuk kita berdua.',
+    waText: 'Halo Reno, mari kita luangkan waktu untuk menikmati sushi favorit kita di Sushi Hiro akhir pekan ini. 🍣🧀'
+  },
+  {
+    id: 'bioskop',
+    icon: '🎬',
+    title: 'Kupon Dekapan Sinema',
+    desc: 'Kencan menonton film pilihanmu di bioskop, ditemani popcorn hangat dan percakapan setelahnya.',
+    waText: 'Halo Reno, ada film menarik yang ingin kutonton bersama. Mari pesan tiket bioskop dan pergi berkencan minggu ini! 🎬🍿'
+  },
+  {
+    id: 'coffee_talk',
+    icon: '☕',
+    title: 'Kencan Kopi & Cerita Mendalam',
+    desc: 'Menepi sejenak di coffee shop pilihanmu untuk saling bertukar cerita, mimpi, dan mendengarkan keluh kesah secara mendalam.',
+    waText: 'Halo Reno, aku sedang ingin mengobrol banyak hal secara mendalam denganmu. Cari sudut kedai kopi yang tenang yuk sore ini. ☕🍃'
+  },
+  {
+    id: 'romantic_dinner',
+    icon: '🍽️',
+    title: 'Kencan Makan Malam Romantis',
+    desc: 'Malam yang dirancang istimewa dengan makan malam romantis untuk merayakan kebersamaan dan cinta kita.',
+    waText: 'Halo Reno, mari kita rancang satu malam istimewa untuk makan malam romantis berdua. Aku tidak sabar menantikannya! 🍽️✨'
+  },
+  {
+    id: 'street_food',
+    icon: '🍕',
+    title: 'Eksplorasi Jajanan Malam',
+    desc: 'Petualangan kuliner malam hari untuk berburu street food asin-gurih favoritmu dalam suasana santai.',
+    waText: 'Halo Reno, malam ini cuacanya mendukung untuk berburu jajanan kaki lima. Mari pergi mencari camilan gurih malam ini! 🍕😋'
+  },
+  {
+    id: 'game_night',
+    icon: '🎮',
+    title: 'Kupon Mabar Bebas Gangguan',
+    desc: 'Waktu khusus untuk bermain game bersama, menyelesaikan quest, tanpa terdistraksi hal lain.',
+    waText: 'Halo Reno, mari kita bersenang-senang dengan bermain game bersama malam ini. Siapkan konsol/handphonemu ya! 🎮👾'
+  },
+  {
+    id: 'grocery_date',
+    icon: '🛒',
+    title: 'Kencan Belanja & Langkah Santai',
+    desc: 'Menelusuri lorong supermarket bersama untuk memilih kebutuhan rumah atau camilan favorit dengan penuh tawa.',
+    waText: 'Halo Reno, antarkan aku belanja kebutuhan dan camilan yuk. Mari menikmati grocery date santai berdua! 🛒✨'
+  },
+  {
+    id: 'night_ride',
+    icon: '🚗',
+    title: 'Perjalanan Malam Penyegar Pikiran',
+    desc: 'Berkendara membelah kota di bawah temaram lampu malam sambil mendengarkan lagu-lagu kesukaan kita.',
+    waText: 'Halo Reno, aku sedang ingin menikmati ketenangan kota di malam hari. Mari berkendara santai sambil memutar lagu favorit kita. 🚗🎧'
+  },
+  {
+    id: 'dessert_date',
+    icon: '🍨',
+    title: 'Kencan Manis Pembawa Tawa',
+    desc: 'Mencari es krim atau hidangan manis lainnya sebagai pelengkap hari yang cerah.',
+    waText: 'Halo Reno, manisnya es krim rasanya akan menyempurnakan hari ini. Mari kita pergi menikmati gelato bersama! 🍨🍧'
+  },
+  {
+    id: 'museum_date',
+    icon: '🎨',
+    title: 'Langkah Sunyi di Galeri Seni',
+    desc: 'Menikmati akhir pekan dengan berjalan perlahan di antara karya seni di museum atau galeri pilihanmu.',
+    waText: 'Halo Reno, mari kita kunjungi pameran seni atau museum akhir pekan ini untuk menikmati keindahan visual bersama. 🎨🏛️'
+  },
+  {
+    id: 'cooking_date',
+    icon: '🍳',
+    title: 'Kolaborasi Dapur Rumah',
+    desc: 'Mulai dari berbelanja bahan hingga menyiapkan hidangan makan malam gurih buatan kita sendiri.',
+    waText: 'Halo Reno, mari kita buat hidangan istimewa versi kita sendiri di dapur hari ini. Aku ingin memasak bersamamu! 🍳🥘'
+  },
+  {
+    id: 'makeup_restock',
+    icon: '💄',
+    title: 'Kupon Dukungan Meja Rias',
+    desc: 'Voucher khusus untuk merestok salah satu produk makeup favoritmu yang mulai habis.',
+    waText: 'Halo Reno, salah satu makeup pentingku di meja rias sudah habis nih. Boleh tolong bantu aku membelikannya kembali? 💄'
+  },
+  {
+    id: 'darry_ring',
+    icon: '💍',
+    title: 'Langkah Masa Depan (Darry Ring)',
+    desc: 'Simbol komitmen tabungan bersama demi mewujudkan cincin impian masa depan kita.',
+    waText: 'Halo Reno, mari kita tambahkan komitmen tabungan untuk masa depan kita hari ini. Terima kasih telah berjuang bersama! 💍'
+  },
+  {
+    id: 'free_hug',
+    icon: '🧸',
+    title: 'Kupon Pelukan Hangat',
+    desc: 'Pelukan erat penenang jiwa yang bisa kamu klaim kapan saja saat dunia terasa melelahkan.',
+    waText: 'Halo Reno, aku sedang butuh ketenangan. Boleh minta pelukan hangat dan waktu bersamamu sekarang? 🧸'
+  }
+];
+
+function renderCoupons() {
+  const container = document.getElementById('coupons-container');
+  container.innerHTML = '';
+  
+  initialCoupons.forEach(c => {
+    const isUsed = localStorage.getItem(`coupon_${c.id}_used`) === 'true';
+    const usedDate = localStorage.getItem(`coupon_${c.id}_date`) || '';
+
+    const card = document.createElement('div');
+    card.className = `coupon-card ${isUsed ? 'used' : ''}`;
+    card.id = `coupon-card-${c.id}`;
+
+    card.innerHTML = `
+      <div class="coupon-inner">
+        <div class="coupon-front">
+          <div class="notch notch-l"></div>
+          <div class="notch notch-r"></div>
+          <div class="ticket-watermark">TICKET</div>
+          <div>
+            <div class="coupon-icon">${c.icon}</div>
+            <h3 class="coupon-title">${c.title}</h3>
+            <p class="coupon-desc">${c.desc}</p>
+          </div>
+          <button class="coupon-action-btn clickable" onclick="redeemCoupon('${c.id}', '${encodeURIComponent(c.waText)}')">Gunakan Kupon 🎟️</button>
+        </div>
+        <div class="coupon-back">
+          <div class="notch notch-l"></div>
+          <div class="notch notch-r"></div>
+          <div class="coupon-icon">✅</div>
+          <div class="coupon-status">SUDAH DIKLAIM</div>
+          <div class="coupon-redeemed-date">Digunakan pada:<br><strong>${usedDate}</strong></div>
+          <button class="coupon-reset-btn clickable" onclick="resetCoupon(event, '${c.id}')">Reset Kupon (Buka Lagi)</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function redeemCoupon(id, encodedText) {
+  const card = document.getElementById(`coupon-card-${id}`);
+  if (card) {
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    
+    localStorage.setItem(`coupon_${id}_used`, 'true');
+    localStorage.setItem(`coupon_${id}_date`, dateStr);
+
+    card.classList.add('used');
+
+    const waText = decodeURIComponent(encodedText);
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(waText)}`;
+    
+    setTimeout(() => {
+      window.open(waUrl, '_blank');
+    }, 800);
+  }
+}
+
+function resetCoupon(evt, id) {
+  evt.stopPropagation();
+  localStorage.removeItem(`coupon_${id}_used`);
+  localStorage.removeItem(`coupon_${id}_date`);
+  
+  const card = document.getElementById(`coupon-card-${id}`);
+  if (card) {
+    card.classList.remove('used');
+  }
+}
+
+renderCoupons();
+
+// Makeup shelf
+const initialMakeup = [
+  { id: 'moist', name: 'Moisturizer Skintific', category: 'Skin Prep', desc: 'Untuk menjaga kelembapan kulit wajah.', wa: 'Moisturizer Skintific' },
+  { id: 'settingspray', name: 'Setting Spray Studio Tropic (Dry Skin)', category: 'Skin Prep', desc: 'Untuk mengunci makeup agar tahan lama.', wa: 'Setting Spray Studio Tropic' },
+  { id: 'corrector', name: 'Orange Corrector Saniye', category: 'Make Up Base', desc: 'Untuk menyamarkan lingkar hitam di bawah mata.', wa: 'Orange Corrector Saniye' },
+  { id: 'skintint', name: 'Skintint Skintific (Shade 3A Almond)', category: 'Make Up Base', desc: 'Base makeup harian yang sesuai dengan warna kulit.', wa: 'Skintint Skintific Shade 3A Almond' },
+  { id: 'cushion', name: 'Cushion Skintific (Shade 3 Petal)', category: 'Make Up Base', desc: 'Base makeup, ingin beralih ke 3A Almond jika habis.', wa: 'Cushion Skintific Shade 3 Petal / 3A Almond' },
+  { id: 'loosepowder', name: 'Loose Powder Ultima II (Neutral)', category: 'Make Up Base', desc: 'Untuk menyamarkan tampilan pori-pori wajah.', wa: 'Loose Powder Ultima II Shade Neutral' },
+  { id: 'eyeshadow', name: 'Eye Shadow Set Pinkflash', category: 'Eyes & Cheeks', desc: 'Digunakan juga sebagai blush dan contour.', wa: 'Eye Shadow Set Pinkflash' },
+  { id: 'mascara', name: 'Mascara Holika Holika (Volume)', category: 'Eyes', desc: 'Membuat bulu mata tampak panjang dan lentik alami.', wa: 'Mascara Holika Holika Volume' },
+  { id: 'lipmatte', name: 'Lipmatte Wardah (Shade 11 / 27)', category: 'Lips', desc: 'Menggunakan shade 11 sebagai alternatif shade 27 Beehave.', wa: 'Lipmatte Wardah Shade 11 atau 27 Beehave' },
+  { id: 'lipvinyl', name: 'Lip Vinyl Maybelline (10 Lippy)', category: 'Lips', desc: 'Lip vinyl favorit dengan ketahanan dan warna yang sangat baik.', wa: 'Lip Vinyl Maybelline 10 Lippy' },
+  { id: 'liptint', name: 'Dear Me Beauty Liptint (Dear Vania)', category: 'Lips', desc: 'Liptint warna gelap untuk sentuhan akhir.', wa: 'Dear Me Beauty Liptint Shade Dear Vania' }
+];
+
+function renderMakeup() {
+  const container = document.getElementById('makeup-list-container');
+  container.innerHTML = '';
+
+  initialMakeup.forEach(item => {
+    const savedStatus = localStorage.getItem(`makeup_${item.id}_status`) || 'Aman';
+    
+    const div = document.createElement('div');
+    div.className = 'makeup-item';
+    div.innerHTML = `
+      <div class="makeup-info">
+        <h4>${item.name}</h4>
+        <p>Kategori: <strong>${item.category}</strong> — ${item.desc}</p>
+      </div>
+      <div class="makeup-status-wrapper">
+        <select class="makeup-select clickable" onchange="updateMakeupStatus('${item.id}', this.value)">
+          <option value="Aman" ${savedStatus === 'Aman' ? 'selected' : ''}>Aman ✅</option>
+          <option value="Hampir Habis" ${savedStatus === 'Hampir Habis' ? 'selected' : ''}>Hampir Habis ⚠️</option>
+          <option value="Habis" ${savedStatus === 'Habis' ? 'selected' : ''}>Habis! 🚨</option>
+        </select>
+        <button class="makeup-request-btn clickable" onclick="requestRestock('${item.name}')">Kirim Kabar Restock 🛒</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function updateMakeupStatus(id, value) {
+  localStorage.setItem(`makeup_${id}_status`, value);
+}
+
+function requestRestock(name) {
+  const text = `Halo Reno, aku ingin mengabarkan kalau stok "${name}" milikku sudah hampir habis. Jika senggang, bolehkah bantu aku untuk membelikannya? Terima kasih banyak ya. 🤍`;
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  window.open(waUrl, '_blank');
+}
+
+renderMakeup();
+
+// Cute Notes Tab Logic
+let activeSender = 'Salsa';
+let activeSticker = '💖';
+
+const defaultNotes = [
+  {
+    id: 'note-1',
+    sender: 'Reno',
+    receiver: 'Salsa',
+    text: 'Halo Salsa cantik, terima kasih sudah selalu menemani hari-hariku dengan senyum manismu ya. Semangat terus buat hari ini! 🤍',
+    sticker: '💖',
+    date: '19 Juli 2026, 14:30'
+  },
+  {
+    id: 'note-2',
+    sender: 'Salsa',
+    receiver: 'Reno',
+    text: 'Hai Reno, jangan lupa makan siang dan istirahat ya di sela-sela kesibukan kerjamu. Semangat terus ya ganteng! 🧸',
+    sticker: '🧸',
+    date: '20 Juli 2026, 12:15'
+  }
+];
+
+function getNotes() {
+  const stored = localStorage.getItem('love_hub_cute_notes');
+  if (!stored) {
+    localStorage.setItem('love_hub_cute_notes', JSON.stringify(defaultNotes));
+    return defaultNotes;
+  }
+  return JSON.parse(stored);
+}
+
+function saveNotes(notes) {
+  localStorage.setItem('love_hub_cute_notes', JSON.stringify(notes));
+}
+
+function selectSender(sender) {
+  activeSender = sender;
+  
+  const salsaBtn = document.getElementById('sender-salsa');
+  const renoBtn = document.getElementById('sender-reno');
+  
+  if (sender === 'Salsa') {
+    salsaBtn.classList.add('active');
+    renoBtn.classList.remove('active');
+  } else {
+    renoBtn.classList.add('active');
+    salsaBtn.classList.remove('active');
+  }
+}
+
+function selectSticker(sticker) {
+  activeSticker = sticker;
+  
+  // Highlight active button
+  const btns = document.querySelectorAll('.sticker-btn');
+  btns.forEach(btn => {
+    if (btn.innerText === sticker) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+function renderNotes() {
+  const container = document.getElementById('notes-grid-container');
+  if (!container) return;
+  
+  const notes = getNotes();
+  container.innerHTML = '';
+  
+  if (notes.length === 0) {
+    container.innerHTML = `
+      <div class="empty-notes">
+        Belum ada catatan manis yang tertinggal. Tulis catatan pertama di sebelah kiri! ✍️
+      </div>
+    `;
+    return;
+  }
+  
+  // Render notes sorted by newest first
+  notes.slice().reverse().forEach(note => {
+    const noteEl = document.createElement('div');
+    noteEl.className = 'sticky-note';
+    noteEl.innerHTML = `
+      <div class="sticky-pin">📌</div>
+      <div class="sticky-header">
+        <div class="sticky-direction">
+          <strong>${note.sender}</strong>
+          <span class="arrow">➔</span>
+          <strong>${note.receiver}</strong>
+        </div>
+        <div class="sticky-sticker">${note.sticker}</div>
+      </div>
+      <div class="sticky-body">
+        ${note.text.replace(/\n/g, '<br>')}
+      </div>
+      <div class="sticky-footer">
+        <span class="sticky-date">${note.date}</span>
+        <button class="delete-note-btn clickable" onclick="deleteNote('${note.id}')">Hapus ✕</button>
+      </div>
+    `;
+    container.appendChild(noteEl);
+  });
+}
+
+function addNote() {
+  const textInput = document.getElementById('note-text');
+  const text = textInput.value.trim();
+  
+  if (!text) {
+    alert('Tuliskan pesan lucumu terlebih dahulu ya! 🤍');
+    return;
+  }
+  
+  const notes = getNotes();
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  
+  const newNote = {
+    id: 'note-' + Date.now(),
+    sender: activeSender,
+    receiver: activeSender === 'Salsa' ? 'Reno' : 'Salsa',
+    text: text,
+    sticker: activeSticker,
+    date: dateStr
+  };
+  
+  notes.push(newNote);
+  saveNotes(notes);
+  
+  // Clear textarea
+  textInput.value = '';
+  
+  // Re-render
+  renderNotes();
+}
+
+function deleteNote(id) {
+  if (confirm('Kamu yakin ingin menghapus catatan lucu ini? 🥺')) {
+    let notes = getNotes();
+    notes = notes.filter(n => n.id !== id);
+    saveNotes(notes);
+    renderNotes();
+  }
+}
+
+function clearAllNotes() {
+  if (confirm('Kamu yakin ingin menghapus semua catatan sejarah manis kita di papan ini? 🥺')) {
+    saveNotes([]);
+    renderNotes();
+  }
+}
+
+// Initial Call
+renderNotes();
+</script>
+</body>
+</html>

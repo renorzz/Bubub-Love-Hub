@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Garden for Bubub 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#040008;cursor:none}
+canvas{position:fixed;inset:0;display:block}
+#hint{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;transition:opacity 1.5s ease}
+#hint h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.4rem,4vw,3rem);letter-spacing:.4em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:10px}
+#hint p{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(1.8rem,5vw,4rem);letter-spacing:.35em;color:#d966ff;text-shadow:0 0 30px #d966ff,0 0 60px #aa00ff;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
+#hint small{display:block;margin-top:14px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(.75rem,1.5vw,.95rem);letter-spacing:.2em;color:rgba(255,255,255,.3)}
+@keyframes pulse{0%,100%{text-shadow:0 0 20px #d966ff,0 0 40px #aa00ff}50%{text-shadow:0 0 40px #d966ff,0 0 80px #aa00ff,0 0 120px #7700ff}}
+#cur{position:fixed;width:10px;height:10px;border-radius:50%;background:#fff;pointer-events:none;z-index:9999;transform:translate(-50%,-50%) scale(1);transition:transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;mix-blend-mode:difference}
+body:has(a:hover) #cur {
+  transform: translate(-50%,-50%) scale(1.8);
+  background: #ff6bab;
+  box-shadow: 0 0 10px #ff6bab;
+  mix-blend-mode: normal;
+}
+#hub-link {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 107, 171, 0.2);
+  border-radius: 50%;
+  color: #ff6bab;
+  text-decoration: none;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 15px rgba(255, 107, 171, 0.05);
+}
+#hub-link svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+#hub-link:hover {
+  background: rgba(255, 107, 171, 0.1);
+  border-color: rgba(255, 107, 171, 0.6);
+  color: #ff2288;
+  box-shadow: 0 0 25px rgba(255, 107, 171, 0.4);
+  transform: scale(1.1);
+}
+#hub-link:hover svg {
+  transform: scale(1.2);
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<a href="love_hub.html" id="hub-link" title="Buka Love Hub 💖">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+</a>
+<div id="hint">
+  <h2>Garden for</h2>
+  <p>Bubub</p>
+  <small>sentuh di mana saja untuk menanam bunga ✦</small>
+</div>
+<div id="cur"></div>
+<script>
+const PI2=Math.PI*2,lerp=(a,b,t)=>a+(b-a)*t,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),rand=(a,b)=>a+Math.random()*(b-a);
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+const hint=document.getElementById('hint'),cur=document.getElementById('cur');
+let W,H;
+function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+resize();window.addEventListener('resize',resize);
+
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+
+// Color helpers
+function hexRgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
+function liftHex(h,a,alpha=1){const[r,g,b]=hexRgb(h);return`rgba(${Math.min(255,r+a)},${Math.min(255,g+a)},${Math.min(255,b+a)},${alpha})`; }
+function dropHex(h,a,alpha=1){const[r,g,b]=hexRgb(h);return`rgba(${Math.max(0,r-a)},${Math.max(0,g-a)},${Math.max(0,b-a)},${alpha})`; }
+
+// Palettes
+const PAL=[
+  {p:'#ff6bab',c:'#ffe040',g:'#ff2288'},
+  {p:'#d966ff',c:'#ffe040',g:'#9900ff'},
+  {p:'#ff5555',c:'#ff9900',g:'#ff2200'},
+  {p:'#ff9933',c:'#ffe040',g:'#ff6600'},
+  {p:'#55ddff',c:'#ffffff',g:'#0099ff'},
+  {p:'#ffffff',c:'#ffe040',g:'#aaccff'},
+  {p:'#aaffaa',c:'#ffe040',g:'#00ff88'},
+  {p:'#ffcc44',c:'#ffffff',g:'#ff9900'},
+];
+
+// Precompute color strings at startup to avoid loop parsing and invalid formats
+PAL.forEach(p => {
+  p.pLift30 = liftHex(p.p, 30);
+  p.pDrop30_88 = dropHex(p.p, 30, 0.53);
+  p.pLift40_ff = liftHex(p.p, 40, 1);
+  p.p_ee = p.p + 'ee';
+  p.p_22 = p.p + '22';
+  p.pLift60_ee = liftHex(p.p, 60, 0.93);
+  p.p_dd = p.p + 'dd';
+  p.pDrop25_99 = dropHex(p.p, 25, 0.6);
+  p.cDrop40 = dropHex(p.c, 40);
+  p.cDrop80_aa = dropHex(p.c, 80, 0.66);
+  p.c_bb = p.c + 'bb';
+  p.c_44 = p.c + '44';
+});
+
+// Bokeh
+const boks=Array.from({length:25},()=>({x:rand(0,1),y:rand(0,1),r:rand(1,4),a:rand(.03,.15),sp:rand(.00005,.00022),ph:rand(0,PI2)}));
+
+function drawBokeh(ts){
+  boks.forEach(b=>{b.y-=b.sp;if(b.y<0)b.y=1;
+    const al=b.a*(0.5+0.5*Math.sin(ts*.0007+b.ph));
+    ctx.beginPath();ctx.arc(b.x*W,b.y*H,b.r,0,PI2);
+    ctx.fillStyle=`rgba(220,180,255,${al})`;ctx.fill();});
+}
+
+function drawLeaf(x,y,side,len,sway){
+  if(len<2)return;
+  ctx.save();ctx.translate(x,y);ctx.rotate(side*(Math.PI/3.5+sway*0.04));
+  const g=ctx.createLinearGradient(0,0,0,-len);
+  g.addColorStop(0,'#1a5e24');g.addColorStop(.5,'#2d8a3a');g.addColorStop(1,'#44bb55');
+  ctx.fillStyle=g;
+  ctx.beginPath();ctx.moveTo(0,0);
+  ctx.bezierCurveTo(-len*.35,-len*.28,-len*.2,-len*.72,0,-len);
+  ctx.bezierCurveTo(len*.2,-len*.72,len*.35,-len*.28,0,0);
+  ctx.fill();
+  ctx.strokeStyle='rgba(180,255,180,.15)';ctx.lineWidth=.8;
+  ctx.beginPath();ctx.moveTo(0,-len*.02);ctx.quadraticCurveTo(0,-len*.5,0,-len*.94);ctx.stroke();
+  ctx.restore();
+}
+
+function drawFlowerHead(c,x,y,bloomT,pal,sc,nPetals,type){
+  const b=clamp(bloomT,0,1),s=sc;
+  // Aura — cheap radial gradient, no blur
+  const ar=65*s*b;
+  const ag=c.createRadialGradient(x,y,0,x,y,ar);
+  ag.addColorStop(0,pal.g+'55');ag.addColorStop(.55,pal.g+'11');ag.addColorStop(1,'transparent');
+  c.fillStyle=ag;c.beginPath();c.arc(x,y,ar,0,PI2);c.fill();
+
+  c.save();c.translate(x,y);
+
+  if(type===0){
+    // ROSE / PEONY — single ring (inner ring removed for perf)
+    const pL=lerp(0,35,b)*s,pW=lerp(0,16,b)*s;
+    for(let i=0;i<nPetals;i++){
+      const a=(PI2/nPetals)*i+.25;c.save();c.rotate(a);
+      const g=c.createLinearGradient(0,-pL*.05,0,-pL);
+      g.addColorStop(0,pal.pLift30);g.addColorStop(.45,pal.p);g.addColorStop(1,pal.pDrop30_88);
+      c.fillStyle=g;
+      c.beginPath();c.moveTo(-pW*.15,0);
+      c.bezierCurveTo(-pW,-pL*.2,-pW*.95,-pL*.68,-pW*.25,-pL);
+      c.bezierCurveTo(0,-pL*1.06,pW*.25,-pL,pW*.95,-pL*.68);
+      c.bezierCurveTo(pW,-pL*.2,pW*.15,0,pW*.15,0);c.closePath();c.fill();
+      c.restore();
+    }
+  }else if(type===1){
+    // DAISY / COSMOS
+    const cnt=nPetals+2,pL=lerp(0,42,b)*s,pW=lerp(0,11,b)*s;
+    for(let i=0;i<cnt;i++){
+      const a=(PI2/cnt)*i;c.save();c.rotate(a);
+      const g=c.createLinearGradient(0,0,0,-pL);
+      g.addColorStop(0,pal.pLift40_ff);g.addColorStop(.4,pal.p_ee);g.addColorStop(1,pal.p_22);
+      c.fillStyle=g;
+      c.beginPath();c.moveTo(0,0);
+      c.bezierCurveTo(-pW*.65,-pL*.28,-pW*.55,-pL*.72,0,-pL);
+      c.bezierCurveTo(pW*.55,-pL*.72,pW*.65,-pL*.28,0,0);c.fill();
+      c.restore();
+    }
+  }else{
+    // POPPY / HIBISCUS — 5 broad petals
+    const pL=lerp(0,38,b)*s,pW=lerp(0,20,b)*s;
+    for(let i=0;i<5;i++){
+      const a=(PI2/5)*i;c.save();c.rotate(a);
+      const g=c.createRadialGradient(0,-pL*.35,2,0,-pL*.45,pW*1.1);
+      g.addColorStop(0,pal.pLift60_ee);g.addColorStop(.45,pal.p_dd);g.addColorStop(1,pal.pDrop25_99);
+      c.fillStyle=g;
+      c.beginPath();c.moveTo(0,-pW*.08);
+      c.bezierCurveTo(-pW*1.05,-pL*.12,-pW*1.08,-pL*.6,-pW*.5,-pL);
+      c.bezierCurveTo(-pW*.18,-pL*1.06,pW*.18,-pL*1.06,pW*.5,-pL);
+      c.bezierCurveTo(pW*1.08,-pL*.6,pW*1.05,-pL*.12,0,-pW*.08);c.closePath();c.fill();
+      c.restore();
+    }
+  }
+
+  // Center — Concentric circles (removed heavy shadowBlur to prevent animation lag)
+  const cr=lerp(0,12,b)*s,cr2=cr*1.5;
+  const cBase=c.createRadialGradient(0,0,cr*.2,0,0,cr2);
+  cBase.addColorStop(0,pal.cDrop40);cBase.addColorStop(1,pal.cDrop80_aa);
+  c.fillStyle=cBase;c.beginPath();c.arc(0,0,cr2,0,PI2);c.fill();
+  
+  // High-performance soft glow layer
+  c.fillStyle=pal.c_44;c.beginPath();c.arc(0,0,cr*1.8,0,PI2);c.fill();
+
+  const cg=c.createRadialGradient(0,0,0,0,0,cr);
+  cg.addColorStop(0,'#fff');cg.addColorStop(.4,pal.c);cg.addColorStop(1,pal.c_bb);
+  c.fillStyle=cg;c.beginPath();c.arc(0,0,cr,0,PI2);c.fill();
+  if(b>.6){const da=(b-.6)/.4;c.fillStyle=`rgba(255,255,255,${da*.5})`;for(let i=0;i<7;i++){const a=(PI2/7)*i,dr=cr*1.12;c.beginPath();c.arc(Math.cos(a)*dr,Math.sin(a)*dr,1*s,0,PI2);c.fill();}}
+  c.restore();
+}
+
+class Flower{
+  constructor(x){
+    this.x=x;
+    this.pal=PAL[Math.floor(rand(0,PAL.length))];
+    this.type=Math.floor(rand(0,3));
+    this.nPetals=Math.floor(rand(5,9));
+    this.sc=rand(.75,1.35);
+    this.targetH=rand(90,Math.min(340,H*.68))*this.sc;
+    this.stemH=0;
+    this.growRate=rand(1.3,2.8);
+    this.bloomT=0;
+    this.phase='growing';
+    this.swaySpd=rand(.0015,.0032);
+    this.swayAmp=rand(5,11);
+    this.swayOff=rand(0,PI2);
+    this.sway=0;
+    this.leaves=[
+      {t:rand(.25,.44),side:-1,mul:rand(.7,1.1),openT:0},
+      {t:rand(.44,.64),side: 1,mul:rand(.65,1.0),openT:0},
+      {t:rand(.62,.80),side:-1,mul:rand(.55,.9),openT:0},
+    ];
+    this.sparks=[];this.sparkTimer=0;
+    this.cachedCanvas=null;
+    this.cachedSize=0;
+  }
+  update(dt){
+    this.sway=Math.sin(Date.now()*this.swaySpd+this.swayOff)*this.swayAmp;
+    if(this.phase==='growing'){
+      this.stemH=Math.min(this.stemH+this.growRate*dt*.055,this.targetH);
+      this.leaves.forEach(l=>{
+        if(this.stemH/this.targetH>l.t)l.openT=Math.min(1,l.openT+.03);
+      });
+      if(this.stemH>=this.targetH)this.phase='blooming';
+    }else if(this.phase==='blooming'){
+      this.bloomT=Math.min(1,this.bloomT+.016);
+      if(this.bloomT>=1)this.phase='alive';
+    }
+    if(this.phase==='alive'){
+      this.sparkTimer+=dt;
+      if(this.sparkTimer>80+rand(0,80)){
+        this.sparkTimer=0;
+        const tx=this.x+this.sway,ty=H-this.stemH;
+        this.sparks.push({x:tx+rand(-14,14)*this.sc,y:ty+rand(-14,14)*this.sc,vx:rand(-.5,.5),vy:rand(-1.5,-.3),r:rand(1,3)*this.sc,life:1});
+      }
+    }
+    this.sparks.forEach(s=>{s.x+=s.vx;s.y+=s.vy;s.vy+=.025;s.life-=.016;});
+    this.sparks=this.sparks.filter(s=>s.life>0);
+  }
+  draw(){
+    const tx=this.x+this.sway,ty=H-this.stemH;
+    const mx=this.x+this.sway*.35,my=H-this.stemH*.5;
+    // Stem — no shadowBlur
+    ctx.strokeStyle='#2d7a35';ctx.lineWidth=2.5*this.sc;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(this.x,H);ctx.quadraticCurveTo(mx,my,tx,ty);ctx.stroke();
+    // Leaves
+    this.leaves.forEach(l=>{
+      if(l.openT<=0)return;
+      const lx=lerp(this.x,tx,l.t),ly=lerp(H,ty,l.t);
+      drawLeaf(lx,ly,l.side,38*this.sc*l.mul*l.openT,this.sway/this.swayAmp);
+    });
+    // Flower
+    if(this.bloomT>0){
+      if(this.bloomT>=1){
+        if(!this.cachedCanvas){
+          const sz=120*this.sc; // bounding box half size
+          this.cachedCanvas=document.createElement('canvas');
+          this.cachedCanvas.width=sz*2;
+          this.cachedCanvas.height=sz*2;
+          const cx=this.cachedCanvas.getContext('2d');
+          drawFlowerHead(cx,sz,sz,1,this.pal,this.sc,this.nPetals,this.type);
+          this.cachedSize=sz;
+        }
+        ctx.drawImage(this.cachedCanvas,tx-this.cachedSize,ty-this.cachedSize);
+      }else{
+        drawFlowerHead(ctx,tx,ty,this.bloomT,this.pal,this.sc,this.nPetals,this.type);
+      }
+    }
+    // Sparkles — no shadowBlur
+    if(this.sparks.length>0){
+      this.sparks.forEach(s=>{
+        ctx.globalAlpha=s.life*.75;
+        ctx.fillStyle=this.pal.p;
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,PI2);ctx.fill();
+      });
+      ctx.globalAlpha=1;
+    }
+  }
+}
+
+const flowers=[];
+let shown=true;
+
+function addFlower(x){
+  if(flowers.length>=18)flowers.shift();
+  flowers.push(new Flower(clamp(x,40,W-40)));
+  if(shown){hint.style.opacity='0';setTimeout(()=>hint.style.display='none',1500);shown=false;}
+}
+
+cv.addEventListener('click',e=>addFlower(e.clientX));
+cv.addEventListener('touchstart',e=>{addFlower(e.touches[0].clientX);},{passive:true});
+
+// Auto spawn
+function autoSpawn(){
+  const n=Math.floor(rand(5,8));
+  for(let i=0;i<n;i++)setTimeout(()=>addFlower(rand(W*.08,W*.92)),200+i*400);
+}
+
+let last=0,bgGrd=null,ggGrd=null;
+function makeBg(){
+  bgGrd=ctx.createLinearGradient(0,0,0,H);
+  bgGrd.addColorStop(0,'#030007');bgGrd.addColorStop(.75,'#07000f');bgGrd.addColorStop(1,'#080005');
+  ggGrd=ctx.createLinearGradient(0,H-80,0,H);
+  ggGrd.addColorStop(0,'rgba(0,200,80,0)');ggGrd.addColorStop(1,'rgba(0,180,60,.14)');
+}
+function loop(ts){
+  requestAnimationFrame(loop);
+  const dt=Math.min(ts-last,50);last=ts;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=bgGrd;ctx.fillRect(0,0,W,H);
+  drawBokeh(ts);
+  ctx.fillStyle=ggGrd;ctx.fillRect(0,H-80,W,80);
+  flowers.forEach(f=>{f.update(dt);f.draw();});
+}
+
+makeBg();
+window.addEventListener('resize',()=>{resize();makeBg();});
+autoSpawn();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
