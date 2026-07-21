@@ -1148,7 +1148,15 @@ html, body {
   }
   .makeup-status-wrapper {
     width: 100%;
-    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .makeup-select, .makeup-request-btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
   .letter-box {
     padding: 24px 16px;
